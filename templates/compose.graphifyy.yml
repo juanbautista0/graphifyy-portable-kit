@@ -1,0 +1,59 @@
+services:
+  graphify:
+    build:
+      context: .
+      dockerfile: docker/graphify.Dockerfile
+      args:
+        GRAPHIFY_VERSION: "0.9.22"
+    image: ${GRAPHIFYY_IMAGE_NAME:-project-graphifyy}:0.9.22
+    working_dir: /workspace
+    user: "${GRAPHIFY_UID:-1000}:${GRAPHIFY_GID:-1000}"
+    environment:
+      HOME: /tmp
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+        read_only: true
+      - type: bind
+        source: ./graphify-out
+        target: /workspace/graphify-out
+        bind:
+          create_host_path: true
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    network_mode: none
+
+  graphify-setup:
+    image: ${GRAPHIFYY_IMAGE_NAME:-project-graphifyy}:0.9.22
+    build:
+      context: .
+      dockerfile: docker/graphify.Dockerfile
+      args:
+        GRAPHIFY_VERSION: "0.9.22"
+    working_dir: /workspace
+    user: "${GRAPHIFY_UID:-1000}:${GRAPHIFY_GID:-1000}"
+    environment:
+      HOME: /tmp
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: bind
+        source: ./graphify-out
+        target: /workspace/graphify-out
+        bind:
+          create_host_path: true
+    read_only: false
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=128m
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    network_mode: none
