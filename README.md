@@ -2,7 +2,7 @@
 
 Portable, secure, agent-friendly integration kit for adding Graphifyy to existing repositories.
 
-Status: `v0.1.0`, public-ready agent-driven kit. The template set is usable now; the automatic installer CLI is designed but not implemented yet.
+Status: `v0.1.0`, public-ready agent-driven kit. The template set is usable now; the automatic installer CLI is designed but not implemented yet. The kit tooling is Python-first; the Graphifyy runtime installed in target repositories remains Docker-based so application developers do not need local Python.
 
 The goal of this project is to let any team clone this kit, point an AI coding agent at a target repository, and ask:
 
@@ -97,6 +97,51 @@ sequenceDiagram
 - Be idempotent: repeated installation should not overwrite unrelated user changes.
 - Be auditable: every generated file should have a clear purpose.
 
+## Requirements
+
+There are two requirement sets: requirements for this kit, and requirements for repositories where Graphifyy will be installed.
+
+### Kit Requirements
+
+Required:
+
+- Git.
+- Python `3.10+` to run the portable verifier and future installer.
+- No third-party Python packages are required for the current verifier. `requirements.txt` is intentionally standard-library only.
+
+Recommended:
+
+- Docker Engine or Docker Desktop.
+- Docker Compose v2.
+- Internet access when validating or rebuilding the Graphifyy image, because Docker and PyPI dependencies may need to be downloaded.
+
+Optional:
+
+- PowerShell `5+` or PowerShell Core to run `scripts/verify-kit.ps1`.
+- POSIX `sh` to run `scripts/verify-kit.sh`.
+- Corporate image scanners such as Trivy, Grype, Syft, Docker Scout, or approved equivalents.
+
+### Target Repository Requirements
+
+Required:
+
+- Docker Engine or Docker Desktop.
+- Docker Compose v2.
+- Permission to build and run local containers.
+- Enough filesystem permissions to create or update `graphify-out/` in the target repository.
+
+Not required for target repository developers:
+
+- Local Python.
+- Local Graphifyy installation.
+- Model provider API keys.
+
+Security and compliance requirements:
+
+- Existing Sonar, Fluid Attacks, SAST, SCA, secret scanning, and quality gates must remain enabled.
+- Corporate pipeline validations remain authoritative for final acceptance.
+- External semantic/model analysis must remain disabled by default unless explicitly approved.
+
 ## Non Goals
 
 - This kit does not change application logic.
@@ -163,10 +208,30 @@ Do not commit or push. Preserve all security controls.
 
 ## Verify The Kit
 
-Before publishing or after changing templates, run:
+Before publishing or after changing templates, run the Python verifier:
+
+```bash
+python scripts/verify-kit.py
+```
+
+The verifier uses only Python's standard library. Installing `requirements.txt` is optional because it currently contains no third-party packages:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Platform convenience wrappers are also available.
+
+Windows PowerShell:
 
 ```powershell
 ./scripts/verify-kit.ps1
+```
+
+Linux/macOS:
+
+```bash
+sh scripts/verify-kit.sh
 ```
 
 The verifier checks required files, pinned versions, Docker and Compose hardening assumptions, ignore rules, and obvious secret-like patterns.

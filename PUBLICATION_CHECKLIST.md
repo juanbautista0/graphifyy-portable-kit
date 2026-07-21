@@ -8,7 +8,9 @@ Use this before publishing a release.
 - [ ] Keep repository name aligned with package intent, for example `graphifyy-portable-kit`.
 - [ ] Add remote origin.
 - [ ] Review all files for organization-specific paths or secrets.
-- [ ] Run `scripts/verify-kit.ps1`.
+- [ ] Run `python scripts/verify-kit.py`.
+- [ ] On Windows, optionally also run `scripts/verify-kit.ps1`.
+- [ ] On Linux/macOS, optionally also run `sh scripts/verify-kit.sh`.
 - [ ] Tag the release as `v0.1.0`.
 
 ## README
@@ -40,4 +42,3 @@ Use this before publishing a release.
 - [ ] Test against a repo with existing `AGENTS.md`.
 - [ ] Test against a repo with Sonar configured.
 - [ ] Test against a repo with Fluid Attacks configured.
-
