@@ -4,6 +4,14 @@ Portable, secure, agent-friendly integration kit for adding Graphifyy to existin
 
 Status: `v0.1.0`, public-ready agent-driven kit. The template set is usable now; the automatic installer CLI is designed but not implemented yet. The kit tooling is Python-first; the Graphifyy runtime installed in target repositories remains Docker-based so application developers do not need local Python.
 
+## Install
+
+```shell
+git clone https://github.com/juanbautista0/graphifyy-portable-kit graphifyy-portable-kit
+cd graphifyy-portable-kit
+python scripts/verify-kit.py
+
+```
 The goal of this project is to let any team clone this kit, point an AI coding agent at a target repository, and ask:
 
 ```text
