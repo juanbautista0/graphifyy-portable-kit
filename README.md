@@ -18,6 +18,7 @@ The goal of this project is to let any team clone this kit, point an AI coding a
 Implement Graphifyy in this project using graphifyy-portable-kit.
 ```
 
+After successful installation and validation, remove the temporary cloned graphifyy-portable-kit directory from the target repository unless the user explicitly wants to vendor the kit.
 The agent should then inspect the target project, apply the smallest safe integration, and leave the repository with a Docker-based Graphifyy workflow that does not require local Python.
 
 ## How It Works
